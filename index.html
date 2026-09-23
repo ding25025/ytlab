@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="YTLab Studio：健保核刪防護、FHIR 與臨床系統整合顧問，以及 SideBell 隨身鈴、哈波蜜、食熵等 App。">
+<title>YTLab Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
+<style>
+:root{
+  --ground:#F3F6F5; --surface:#FFFFFF; --sunk:#E7EDEB;
+  --ink:#13232B; --ink-2:#4A5C62; --ink-3:#7A8B90;
+  --line:#D3DDDA;
+  --accent:#1D6B58; --accent-ink:#FFFFFF; --accent-soft:#DCEBE5;
+  --flag:#B8741F; --flag-soft:#F6E8D4;
+  --ok:#2D7A4E;
+  --serif:"Noto Serif TC","Songti TC",serif;
+  --sans:"IBM Plex Sans","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0F1A1E; --surface:#16252A; --sunk:#1C2E34;
+    --ink:#E6EEEC; --ink-2:#A9BAB8; --ink-3:#7F9294;
+    --line:#2A3E44;
+    --accent:#5CC0A0; --accent-ink:#0B1A16; --accent-soft:#193A33;
+    --flag:#E0A65A; --flag-soft:#3A2C1A; --ok:#6CC894;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0F1A1E; --surface:#16252A; --sunk:#1C2E34;
+  --ink:#E6EEEC; --ink-2:#A9BAB8; --ink-3:#7F9294;
+  --line:#2A3E44;
+  --accent:#5CC0A0; --accent-ink:#0B1A16; --accent-soft:#193A33;
+  --flag:#E0A65A; --flag-soft:#3A2C1A; --ok:#6CC894;
+}
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:24px}
+@media (max-width:480px){.wrap{padding-inline:16px}}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+.brand b{font-family:var(--serif);font-weight:900;font-size:20px;letter-spacing:.02em}
+.brand span{font-size:13px;color:var(--ink-3)}
+.nav ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;font-size:14px}
+.nav ul a{text-decoration:none;color:var(--ink-2)}
+.nav ul a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:6px;font:500 15px/1 var(--sans);text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:transparent}
+.btn-ghost:hover{border-color:var(--ink-3)}
+.nav .btn{padding:8px 14px;font-size:14px}
+@media (max-width:760px){.nav ul{display:none}}
+
+/* hero */
+.hero{padding-block:72px 64px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,54px);line-height:1.25;letter-spacing:.01em;margin-top:16px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{color:var(--ink-2);font-size:17px;max-width:32em;margin-top:20px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+@media (max-width:880px){.hero-grid{grid-template-columns:1fr;gap:40px}.hero{padding-block:48px}}
+
+/* claim readout */
+.readout{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 18px 40px -24px rgba(19,35,43,.35);overflow:hidden}
+.readout-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:13px}
+.readout-head b{font-weight:600}
+.tag{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;background:var(--sunk);color:var(--ink-3);white-space:nowrap}
+.rows{overflow-x:auto}
+.rows table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
+.rows th{font:500 11px var(--mono);letter-spacing:.06em;color:var(--ink-3);text-align:left;padding:10px 18px;border-bottom:1px solid var(--line)}
+.rows td{padding:11px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+.rows tr:last-child td{border-bottom:0}
+.rows .code{font-family:var(--mono);font-size:12.5px}
+.num{font-variant-numeric:tabular-nums;text-align:right;font-family:var(--mono)}
+.pill{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.pill.flag{background:var(--flag-soft);color:var(--flag)}
+.pill.ok{background:var(--accent-soft);color:var(--ok)}
+.readout-foot{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;background:var(--sunk);font-size:13px;color:var(--ink-2)}
+.readout-foot strong{color:var(--flag);font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* sections */
+section{padding-block:72px}
+.sec-head{display:grid;grid-template-columns:1fr 1.3fr;gap:40px;align-items:end;margin-bottom:40px}
+.sec-head h2{font-family:var(--serif);font-weight:900;font-size:clamp(26px,3.4vw,36px);line-height:1.3;margin-top:10px}
+.sec-head p{color:var(--ink-2);max-width:36em}
+@media (max-width:760px){.sec-head{grid-template-columns:1fr;gap:12px}}
+.band{background:var(--surface);border-block:1px solid var(--line)}
+
+/* flagship product */
+.flagship{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+@media (max-width:880px){.flagship{grid-template-columns:1fr}}
+.steps{display:grid;gap:0;list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-block:18px;border-top:1px solid var(--line);counter-increment:s}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s);font:500 13px var(--mono);color:var(--accent);width:28px;height:28px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center}
+.steps h3{font-size:16px;font-weight:600}
+.steps p{color:var(--ink-2);font-size:15px;margin-top:4px}
+.facts{display:grid;gap:14px;align-content:start}
+.fact{padding:20px 22px;border-radius:8px;background:var(--accent-soft)}
+.fact h3{font-size:15px;font-weight:600;color:var(--accent)}
+.fact p{font-size:15px;color:var(--ink);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{font-size:13px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--surface)}
+
+/* services */
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.svc article{background:var(--surface);padding:28px 26px;display:flex;flex-direction:column;gap:10px}
+.svc h3{font-size:18px;font-weight:600}
+.svc p{color:var(--ink-2);font-size:15px}
+.svc .res{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:auto;padding-top:10px}
+@media (max-width:880px){.svc{grid-template-columns:1fr}}
+
+/* apps */
+.apps{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+@media (max-width:880px){.apps{grid-template-columns:1fr}}
+.app{border:1px solid var(--line);border-radius:10px;padding:28px;background:var(--surface);display:flex;flex-direction:column;gap:12px}
+.app.feature{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.app.feature p{color:color-mix(in srgb,var(--ground) 78%,var(--ink))}
+.app.feature .eyebrow{color:var(--accent-soft)}
+:root[data-theme="dark"] .app.feature .eyebrow{color:var(--accent)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .app.feature .eyebrow{color:var(--accent)}}
+.app h3{font-family:var(--serif);font-weight:900;font-size:24px}
+.app p{color:var(--ink-2);font-size:15px}
+.app ul{margin:0;padding-left:1.1em;font-size:15px}
+.app .btn{align-self:flex-start;margin-top:auto}
+.app.feature .btn-primary{background:var(--ground);color:var(--ink)}
+.side{display:grid;gap:20px}
+.apphead{display:flex;align-items:center;gap:16px}
+.appicon{width:64px;height:64px;border-radius:22.5%;flex:none;box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent),0 6px 16px -8px rgba(0,0,0,.35)}
+.app.feature .appicon{width:80px;height:80px}
+.status{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+
+/* about */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+@media (max-width:760px){.about{grid-template-columns:1fr;gap:24px}}
+.about p{color:var(--ink-2);max-width:34em}
+.about p + p{margin-top:14px}
+dl.cred{margin:0;display:grid;gap:0}
+dl.cred div{display:grid;grid-template-columns:7.5em 1fr;gap:16px;padding-block:14px;border-top:1px solid var(--line)}
+dl.cred div:last-child{border-bottom:1px solid var(--line)}
+dl.cred dt{font-size:13px;color:var(--ink-3)}
+dl.cred dd{margin:0;font-size:15px}
+
+/* contact */
+.contact{background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:48px 44px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+@media (max-width:760px){.contact{grid-template-columns:1fr;padding:32px 24px}}
+.contact h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,3vw,32px);line-height:1.35}
+.contact p{margin-top:12px;opacity:.9}
+.mailbox{background:color-mix(in srgb,var(--accent-ink) 12%,transparent);border-radius:8px;padding:20px}
+.mailbox label{font-size:12px;letter-spacing:.08em;opacity:.8;display:block}
+.mailrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.mailrow output{font-family:var(--mono);font-size:17px;user-select:all;word-break:break-all}
+.copy{background:var(--accent-ink);color:var(--accent);border:0;border-radius:6px;padding:6px 12px;font:500 13px var(--sans);cursor:pointer}
+.mailbox small{display:block;margin-top:10px;font-size:13px;opacity:.8}
+
+footer{padding-block:40px;color:var(--ink-3);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><b>YTLab</b><span>Studio</span></a>
+    <ul>
+      <li><a href="#product">核刪防護</a></li>
+      <li><a href="#services">顧問服務</a></li>
+      <li><a href="#apps">App 產品</a></li>
+      <li><a href="#about">關於我們</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#contact">預約免費核刪健檢</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">診所與醫院的醫療資訊夥伴</div>
+        <h1>在送出申報之前，<br>先把<em>會被核刪的</em>找出來。</h1>
+        <p class="lede">我們懂臨床流程，也懂資料標準。從健保申報預檢、FHIR 資料轉換到病房輔具 App，幫診所與醫院把資訊工作做對、做穩，少一點退件與重工。</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#contact">預約免費核刪健檢</a>
+          <a class="btn btn-ghost" href="#services">了解顧問服務</a>
+        </div>
+      </div>
+
+      <div class="readout" aria-label="核刪防護預檢報告示意">
+        <div class="readout-head">
+          <b>申報預檢報告 · 115 年 8 月</b>
+          <span class="tag">示意資料</span>
+        </div>
+        <div class="rows">
+          <table>
+            <thead><tr><th>專科</th><th>檢核項目</th><th class="num">點數</th><th>結果</th></tr></thead>
+            <tbody>
+              <tr><td>牙科</td><td>X 光攝影 · 間隔未達規定</td><td class="num">400</td><td><span class="pill flag">可能核刪</span></td></tr>
+              <tr><td>牙科</td><td>牙周治療 · 缺前置紀錄</td><td class="num">1,200</td><td><span class="pill flag">可能核刪</span></td></tr>
+              <tr><td>復健科</td><td>物理治療 · 同日重複申報</td><td class="num">190</td><td><span class="pill flag">可能核刪</span></td></tr>
+              <tr><td>家醫科</td><td>門診診察費 · 合理量內</td><td class="num">—</td><td><span class="pill ok">通過</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="readout-foot">
+          <span>本月共檢核 2,318 筆醫令</span>
+          <span>預估可挽回 <strong>1,790</strong> 點</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="product" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">主力產品</div>
+          <h2>核刪防護<br>健保申報預檢服務</h2>
+        </div>
+        <p>直接讀取診所原本就在產出的健保申報媒體檔，依健保規則逐筆預檢，在送出前標出高風險醫令並說明原因。不用換 HIS、不用改操作習慣。</p>
+      </div>
+      <div class="flagship">
+        <ol class="steps">
+          <li><div><h3>提供申報媒體檔</h3><p>診所匯出每月申報檔即可，簽署個資處理協議，資料僅用於預檢。</p></div></li>
+          <li><div><h3>規則引擎逐筆檢核</h3><p>依專科規則庫比對間隔、前置條件、重複申報、合理量等項目。</p></div></li>
+          <li><div><h3>收到預檢報告</h3><p>每一筆風險醫令都附上觸發規則與建議修正方式，送件前就能處理。</p></div></li>
+        </ol>
+        <div class="facts">
+          <div class="fact">
+            <h3>與 HIS 廠商無關</h3>
+            <p>只使用健保標準格式的申報媒體檔，任何 HIS 產出的檔案都能檢核。</p>
+          </div>
+          <div class="fact">
+            <h3>依專科累積規則</h3>
+            <p>規則以資料形式維護，依專科逐步擴充：</p>
+            <div class="chips"><span class="chip">牙科</span><span class="chip">復健科</span><span class="chip">家醫科</span><span class="chip">更多專科陸續加入</span></div>
+          </div>
+          <div class="fact">
+            <h3>先免費健檢，再決定</h3>
+            <p>用一個月的申報檔做一次完整健檢，看到實際可挽回的點數再談合作。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">顧問服務</div>
+          <h2>醫療資訊顧問與系統整合</h2>
+        </div>
+        <p>從資料標準到臨床現場的流程，以專案方式協助診所與醫院完成導入、轉換與整合。</p>
+      </div>
+      <div class="svc">
+        <article>
+          <h3>FHIR 資料轉換</h3>
+          <p>將既有 HIS 資料對應到 FHIR 標準與台灣核心實作指引，建置 FHIR Server 與 API，支援資料交換與上傳需求。</p>
+          <div class="res">Patient · Encounter · Observation · Claim</div>
+        </article>
+        <article>
+          <h3>診所流程自動化</h3>
+          <p>盤點掛號、看診、批價到申報的重複作業，用小工具與排程把人工步驟自動化，減少錯誤與加班。</p>
+          <div class="res">申報檔處理 · 報表 · 資料匯出</div>
+        </article>
+        <article>
+          <h3>臨床系統整合</h3>
+          <p>重症與病房臨床資訊系統的導入、移轉與介接，涵蓋 HL7 介面、儀器資料與院內客製需求。</p>
+          <div class="res">HL7 v2 · FHIR · 資安程式碼檢測</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">App 產品</div>
+          <h2>從病房到日常生活的應用</h2>
+        </div>
+        <p>自行開發與維運的 App，把在醫療現場看到的需求，做成真正拿得起來用的工具。</p>
+      </div>
+      <div class="apps">
+        <article class="app feature">
+          <div class="eyebrow">輔具 App · 加護病房</div>
+          <div class="apphead"><img class="appicon" src="data:image/webp;base64,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" alt="SideBell 隨身鈴 App 圖示" width="64" height="64"><h3>SideBell 隨身鈴</h3></div>
+          <p>給無法說話、行動受限的病人使用的藍牙呼叫與溝通工具。不需網路即可運作，病人一按，照護者手機立即收到提醒。</p>
+          <ul>
+            <li>離線藍牙呼叫，不依賴院內網路</li>
+            <li>照護者手機即時提醒</li>
+            <li>適合 ICU、病房與居家照護</li>
+          </ul>
+          <a class="btn btn-primary" href="https://apps.apple.com/tw/app/id6799201744" target="_blank" rel="noopener">在 App Store 查看</a>
+        </article>
+        <div class="side">
+          <article class="app">
+            <div class="status">素食餐廳地圖</div>
+            <div class="apphead"><img class="appicon" src="data:image/webp;base64,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" alt="哈波蜜 App 圖示" width="64" height="64"><h3>哈波蜜</h3></div>
+            <p>找附近的蔬食餐廳。每筆資料都由使用者提案、投票確認，可同時標註全素、蛋奶素、五辛素等分類；歇業的店會變灰保留，不會直接消失。無廣告。</p>
+            <a class="btn btn-ghost" href="https://apps.apple.com/tw/app/id6787411907" target="_blank" rel="noopener">在 App Store 查看</a>
+          </article>
+          <article class="app">
+            <div class="status">食材效期管理</div>
+            <div class="apphead"><img class="appicon" src="data:image/webp;base64,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" alt="食熵 App 圖示" width="64" height="64"><h3>食熵</h3></div>
+            <p>記錄食材的購買日與效期，到期當天早上自動提醒。可記下價格，看見即將過期的金額與 30 天浪費率；支援桌面小工具與 Siri 捷徑。</p>
+            <a class="btn btn-ghost" href="https://apps.apple.com/tw/app/id6793926521" target="_blank" rel="noopener">在 App Store 查看</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div>
+        <div class="eyebrow">關於我們</div>
+        <h2 style="font-family:var(--serif);font-weight:900;font-size:clamp(26px,3.4vw,36px);line-height:1.3;margin-top:10px">懂醫院現場，<br>也懂資料標準。</h2>
+      </div>
+      <div>
+        <p>我們的團隊長期在醫院端做臨床系統整合，參與過多家醫學中心的重症資訊系統導入與移轉，也做過診所 HIS 的資料轉換專案。</p>
+        <p>我們相信好的醫療資訊服務，應該從現場的真實流程出發，再用標準化的資料把它接起來。</p>
+        <dl class="cred" style="margin-top:28px">
+          <div><dt>臨床系統</dt><dd>多家醫學中心重症資訊系統導入、移轉與客製</dd></div>
+          <div><dt>資料標準</dt><dd>FHIR、HL7 實作；初級醫資工程師 FHIR 課程講師</dd></div>
+          <div><dt>診所經驗</dt><dd>診所 HIS 資料轉換與健保申報流程</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2>用一個月的申報檔，<br>看看有多少點數可以挽回。</h2>
+          <p>來信告訴我們診所的科別與每月申報量，我們會安排免費核刪健檢。顧問與 App 合作也歡迎來信洽詢。</p>
+        </div>
+        <div class="mailbox">
+          <label for="mail">聯絡信箱</label>
+          <div class="mailrow">
+            <output id="mail">contact@iairtw.com</output>
+            <button class="copy" id="copyBtn" type="button">複製</button>
+          </div>
+          <small>通常於兩個工作天內回覆</small>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 YTLab Studio</span>
+    <span>核刪防護 · 醫療資訊顧問 · SideBell 隨身鈴</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('copyBtn').addEventListener('click', function(){
+  var btn=this, text=document.getElementById('mail').textContent;
+  function done(){btn.textContent='已複製';setTimeout(function(){btn.textContent='複製'},1600)}
+  function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('mail'));var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='已選取，請按複製'}
+  try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
+});
+</script>
+</body>
+</html>
