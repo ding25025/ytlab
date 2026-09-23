@@ -24,7 +24,10 @@ YTLab Studio 的官方網站：健保核刪防護、醫療資訊顧問（FHIR、
 
 ## 專案結構
 
-整個網站只有一個檔案 `index.html`，不需要 build：CSS 與 JS 都寫在檔案裡，App 圖示以 base64 WebP 內嵌，字型從 Google Fonts 載入。
+不需要 build：
+
+- `index.html`：整個網站，CSS 與 JS 都寫在檔案裡。字型從 Google Fonts 載入。
+- `images/`：App 圖示（192×192 WebP）。
 
 ## 本機預覽
 
