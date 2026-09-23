@@ -12,7 +12,7 @@ YTLab Studio 的官方網站：健保核刪防護、醫療資訊顧問（FHIR、
 | 顧問服務 | `#services` | FHIR 資料轉換、診所流程自動化、臨床系統整合 |
 | App 產品 | `#apps` | SideBell 隨身鈴、哈波蜜、食熵 |
 | 關於我們 | `#about` | |
-| 聯絡 | `#contact` | contact@iairtw.com |
+| 聯絡 | `#contact` | [Calendly 預約 30 分鐘](https://calendly.com/ding25025/30min) |
 
 ## App
 

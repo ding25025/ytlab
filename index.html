@@ -165,10 +165,9 @@ dl.cred dd{margin:0;font-size:15px}
 .contact h2{font-family:var(--serif);font-weight:900;font-size:clamp(24px,3vw,32px);line-height:1.35}
 .contact p{margin-top:12px;opacity:.9}
 .mailbox{background:color-mix(in srgb,var(--accent-ink) 12%,transparent);border-radius:8px;padding:20px}
-.mailbox label{font-size:12px;letter-spacing:.08em;opacity:.8;display:block}
-.mailrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
-.mailrow output{font-family:var(--mono);font-size:17px;user-select:all;word-break:break-all}
-.copy{background:var(--accent-ink);color:var(--accent);border:0;border-radius:6px;padding:6px 12px;font:500 13px var(--sans);cursor:pointer}
+.boxlabel{font-size:12px;letter-spacing:.08em;opacity:.8;display:block}
+.book{display:inline-flex;align-items:center;margin-top:10px;background:var(--accent-ink);color:var(--accent);border-radius:6px;padding:12px 18px;font:600 16px/1.2 var(--sans);text-decoration:none}
+.book:hover{filter:brightness(1.08)}
 .mailbox small{display:block;margin-top:10px;font-size:13px;opacity:.8}
 
 footer{padding-block:40px;color:var(--ink-3);font-size:13px}
@@ -352,15 +351,12 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <div class="contact">
         <div>
           <h2>用一個月的申報檔，<br>看看有多少點數可以挽回。</h2>
-          <p>來信告訴我們診所的科別與每月申報量，我們會安排免費核刪健檢。顧問與 App 合作也歡迎來信洽詢。</p>
+          <p>預約一個 30 分鐘的線上會談，告訴我們診所的科別與每月申報量，我們會安排免費核刪健檢。顧問與 App 合作也歡迎一併預約洽詢。</p>
         </div>
         <div class="mailbox">
-          <label for="mail">聯絡信箱</label>
-          <div class="mailrow">
-            <output id="mail">contact@iairtw.com</output>
-            <button class="copy" id="copyBtn" type="button">複製</button>
-          </div>
-          <small>通常於兩個工作天內回覆</small>
+          <span class="boxlabel">線上預約</span>
+          <a class="book" href="https://calendly.com/ding25025/30min" target="_blank" rel="noopener">選擇 30 分鐘會談時段 →</a>
+          <small>透過 Calendly 選擇方便的時間，確認後會收到會議通知。</small>
         </div>
       </div>
     </div>
@@ -374,13 +370,5 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   </div>
 </footer>
 
-<script>
-document.getElementById('copyBtn').addEventListener('click', function(){
-  var btn=this, text=document.getElementById('mail').textContent;
-  function done(){btn.textContent='已複製';setTimeout(function(){btn.textContent='複製'},1600)}
-  function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('mail'));var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='已選取，請按複製'}
-  try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
-});
-</script>
 </body>
 </html>
