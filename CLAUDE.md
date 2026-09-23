@@ -10,7 +10,7 @@ YTLab Studio 的單頁靜態官網，部署在 GitHub Pages（https://ding25025.
 - `img/`：App 圖示。`sidebell`、`herbmeet`（哈波蜜）、`FoodEntropy`（食熵）各有 1024×1024 `.png` 原圖與 192×192 `.webp`（網頁使用，顯示為 64/80px）。
 - `video/`：展示影片（皆 1920×1080 H.264、無聲）與同名 `_poster.webp` 封面（1280×720，取自第 3 秒標題畫面）：
   - `claim-intro.mp4`（32 秒）：核刪防護區塊（`#product`），三步驟下方全寬。
-  - `SideBell_demo.mp4`（64 秒）：SideBell 卡片（整排寬）下半部全寬。
+  - `SideBell_demo.mp4`（57 秒）：SideBell 卡片（整排寬）下半部全寬。
 - `README.md`：給人看的專案說明。
 
 ## 慣例
