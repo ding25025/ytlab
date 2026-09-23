@@ -105,20 +105,13 @@ section{padding-block:72px}
 .band{background:var(--surface);border-block:1px solid var(--line)}
 
 /* flagship product */
-.flagship{display:grid;grid-template-columns:1fr 1fr;gap:48px}
-@media (max-width:880px){.flagship{grid-template-columns:1fr}}
-.steps{display:grid;gap:0;list-style:none;margin:0;padding:0;counter-reset:s}
+.flagship{display:grid;gap:32px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px;list-style:none;margin:0;padding:0;counter-reset:s}
 .steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-block:18px;border-top:1px solid var(--line);counter-increment:s}
-.steps li:last-child{border-bottom:1px solid var(--line)}
+@media (max-width:880px){.steps{grid-template-columns:1fr}.steps li:last-child{border-bottom:1px solid var(--line)}}
 .steps li::before{content:counter(s);font:500 13px var(--mono);color:var(--accent);width:28px;height:28px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center}
 .steps h3{font-size:16px;font-weight:600}
 .steps p{color:var(--ink-2);font-size:15px;margin-top:4px}
-.facts{display:grid;gap:14px;align-content:start}
-.fact{padding:20px 22px;border-radius:8px;background:var(--accent-soft)}
-.fact h3{font-size:15px;font-weight:600;color:var(--accent)}
-.fact p{font-size:15px;color:var(--ink);margin-top:6px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-.chip{font-size:13px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--surface)}
 
 /* services */
 .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -129,8 +122,7 @@ section{padding-block:72px}
 @media (max-width:880px){.svc{grid-template-columns:1fr}}
 
 /* apps */
-.apps{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
-@media (max-width:880px){.apps{grid-template-columns:1fr}}
+.apps{display:grid;gap:20px}
 .app{border:1px solid var(--line);border-radius:10px;padding:28px;background:var(--surface);display:flex;flex-direction:column;gap:12px}
 .app.feature{background:var(--ink);color:var(--ground);border-color:var(--ink)}
 .app.feature p{color:color-mix(in srgb,var(--ground) 78%,var(--ink))}
@@ -142,10 +134,23 @@ section{padding-block:72px}
 .app ul{margin:0;padding-left:1.1em;font-size:15px}
 .app .btn{align-self:flex-start;margin-top:auto}
 .app.feature .btn-primary{background:var(--ground);color:var(--ink)}
-.side{display:grid;gap:20px}
+.side{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:880px){.side{grid-template-columns:1fr}}
+.feature-info{display:grid;grid-template-columns:1.2fr 1fr;gap:12px 40px;align-items:end}
+.feature-info>div{display:flex;flex-direction:column;gap:12px}
+@media (max-width:760px){.feature-info{grid-template-columns:1fr}}
 .apphead{display:flex;align-items:center;gap:16px}
 .appicon{width:64px;height:64px;border-radius:22.5%;flex:none;box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent),0 6px 16px -8px rgba(0,0,0,.35)}
 .app.feature .appicon{width:80px;height:80px}
+.demo{margin:4px 0 8px;align-self:start}
+.demo video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:8px;background:#0A1A45}
+.demo figcaption{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--ink-3)}
+.demo figcaption span{margin-right:auto}
+.demo-btn{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 12px;font:500 13px var(--sans);cursor:pointer}
+.demo-btn:hover{border-color:var(--ink-3)}
+.app.feature .demo figcaption{color:color-mix(in srgb,var(--ground) 70%,var(--ink))}
+.app.feature .demo-btn{color:var(--ground);border-color:color-mix(in srgb,var(--ground) 35%,transparent)}
+.app.feature .demo-btn:hover{border-color:var(--ground)}
 .status{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 
 /* about */
@@ -241,21 +246,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
           <li><div><h3>規則引擎逐筆檢核</h3><p>依專科規則庫比對間隔、前置條件、重複申報、合理量等項目。</p></div></li>
           <li><div><h3>收到預檢報告</h3><p>每一筆風險醫令都附上觸發規則與建議修正方式，送件前就能處理。</p></div></li>
         </ol>
-        <div class="facts">
-          <div class="fact">
-            <h3>與 HIS 廠商無關</h3>
-            <p>只使用健保標準格式的申報媒體檔，任何 HIS 產出的檔案都能檢核。</p>
-          </div>
-          <div class="fact">
-            <h3>依專科累積規則</h3>
-            <p>規則以資料形式維護，依專科逐步擴充：</p>
-            <div class="chips"><span class="chip">牙科</span><span class="chip">復健科</span><span class="chip">家醫科</span><span class="chip">更多專科陸續加入</span></div>
-          </div>
-          <div class="fact">
-            <h3>先免費健檢，再決定</h3>
-            <p>用一個月的申報檔做一次完整健檢，看到實際可挽回的點數再談合作。</p>
-          </div>
-        </div>
+        <figure class="demo">
+          <video src="video/claim-intro.mp4" poster="video/claim-intro_poster.webp" width="1920" height="1080" controls muted loop playsinline preload="metadata" aria-label="核刪防護服務介紹影片"></video>
+          <figcaption>
+            <span>服務介紹 · 核刪防護</span>
+            <button class="demo-btn" data-act="toggle" type="button">播放</button>
+            <button class="demo-btn" data-act="restart" type="button">重新開始</button>
+            <button class="demo-btn" data-act="fullscreen" type="button">全螢幕</button>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -300,15 +299,30 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       </div>
       <div class="apps">
         <article class="app feature">
-          <div class="eyebrow">輔具 App · 加護病房</div>
-          <div class="apphead"><img class="appicon" loading="lazy" decoding="async" src="img/sidebell.webp" alt="SideBell 隨身鈴 App 圖示" width="64" height="64"><h3>SideBell 隨身鈴</h3></div>
-          <p>給無法說話、行動受限的病人使用的藍牙呼叫與溝通工具。不需網路即可運作，病人一按，照護者手機立即收到提醒。</p>
-          <ul>
-            <li>離線藍牙呼叫，不依賴院內網路</li>
-            <li>照護者手機即時提醒</li>
-            <li>適合 ICU、病房與居家照護</li>
-          </ul>
-          <a class="btn btn-primary" href="https://apps.apple.com/app/id6799201744" target="_blank" rel="noopener">在 App Store 查看</a>
+          <div class="feature-info">
+            <div>
+              <div class="eyebrow">輔具 App · 加護病房</div>
+              <div class="apphead"><img class="appicon" loading="lazy" decoding="async" src="img/sidebell.webp" alt="SideBell 隨身鈴 App 圖示" width="64" height="64"><h3>SideBell 隨身鈴</h3></div>
+              <p>給無法說話、行動受限的病人使用的藍牙呼叫與溝通工具。不需網路即可運作，病人一按，照護者手機立即收到提醒。</p>
+            </div>
+            <div>
+              <ul>
+                <li>離線藍牙呼叫，不依賴院內網路</li>
+                <li>照護者手機即時提醒</li>
+                <li>適合 ICU、病房與居家照護</li>
+              </ul>
+              <a class="btn btn-primary" href="https://apps.apple.com/app/id6799201744" target="_blank" rel="noopener">在 App Store 查看</a>
+            </div>
+          </div>
+          <figure class="demo">
+            <video src="video/SideBell_demo.mp4" poster="video/SideBell_demo_poster.webp" width="1920" height="1080" controls muted loop playsinline preload="metadata" aria-label="SideBell 隨身鈴眼控模式功能展示影片"></video>
+            <figcaption>
+              <span>功能展示 · 眼控模式</span>
+              <button class="demo-btn" data-act="toggle" type="button">播放</button>
+              <button class="demo-btn" data-act="restart" type="button">重新開始</button>
+              <button class="demo-btn" data-act="fullscreen" type="button">全螢幕</button>
+            </figcaption>
+          </figure>
         </article>
         <div class="side">
           <article class="app">
@@ -370,5 +384,27 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   </div>
 </footer>
 
+<script>
+// 展示影片：捲進畫面時自動（靜音）播放、離開時暫停；使用者手動暫停過就不再自動播放
+document.querySelectorAll('figure.demo').forEach(function(fig){
+  var v=fig.querySelector('video'),toggle=fig.querySelector('[data-act=toggle]'),restart=fig.querySelector('[data-act=restart]');
+  var userPaused=false,autoPausing=false;
+  function sync(){toggle.textContent=v.paused?'播放':'暫停'}
+  v.addEventListener('play',function(){userPaused=false;sync()});
+  v.addEventListener('pause',function(){if(autoPausing)autoPausing=false;else userPaused=true;sync()});
+  toggle.addEventListener('click',function(){v.paused?v.play():v.pause()});
+  restart.addEventListener('click',function(){v.currentTime=0;v.play()});
+  fig.querySelector('[data-act=fullscreen]').addEventListener('click',function(){
+    if(v.requestFullscreen)v.requestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();
+    if(v.paused)v.play();
+  });
+  if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){if(!userPaused&&v.paused)v.play().catch(function(){})}
+      else if(!v.paused){autoPausing=true;v.pause()}
+    })},{threshold:.5}).observe(v);
+  }
+});
+</script>
 </body>
 </html>
